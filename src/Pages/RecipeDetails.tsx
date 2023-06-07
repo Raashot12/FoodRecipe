@@ -7,7 +7,7 @@ import {
 import {useEffect} from "react"
 import {useAppDispatch, useAppSelector} from "../redux/hooks"
 import Loader from "../Loader"
-import {Icon24Hours, IconTimeline} from "@tabler/icons-react"
+import {Icon24Hours} from "@tabler/icons-react"
 
 const RecipeDetails = () => {
   const {id} = useParams()
