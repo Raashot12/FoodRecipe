@@ -15,7 +15,7 @@ const initialState: RecipeDetailedStateType = {
 }
 export const fetchRecipesSearch = createAsyncThunk(
   "user/fetchRecipesDetails",
-  async (value: number) => {
+  async (value: string) => {
     const {data} = await fetchRecipesDetails(value)
     return data
   }
