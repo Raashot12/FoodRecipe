@@ -6,7 +6,7 @@ import EmblaCarousel from "../shared/EmblaCarousel"
 import {popularRecipesDetails, popularState} from "../../slices/popularSlice"
 import {useEffect} from "react"
 import {useAppDispatch, useAppSelector} from "../../redux/hooks"
-import Loader from "../../loader"
+import Loader from "../../Loader"
 
 const PopularRecipe = () => {
   const dispatch = useAppDispatch()

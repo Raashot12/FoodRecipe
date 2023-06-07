@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit"
 import {RootState} from "../redux/store"
-import {fetchRecipes} from "../services/recipes"
+import {fetchRecipesDetails} from "../services/recipeDetails"
 
 type RecipeDetailedStateType = {
   loading: boolean
@@ -16,7 +16,7 @@ const initialState: RecipeDetailedStateType = {
 export const fetchRecipesSearch = createAsyncThunk(
   "user/fetchRecipesDetails",
   async (value: number) => {
-    const {data} = await fetchRecipes(value)
+    const {data} = await fetchRecipesDetails(value)
     return data
   }
 )

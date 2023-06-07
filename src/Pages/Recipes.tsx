@@ -6,8 +6,6 @@ import {
   setSearch,
 } from "../slices/recipesSlice"
 import {useAppDispatch, useAppSelector} from "../redux/hooks"
-import { useEffect } from "react"
-
 const Recipes = () => {
   const dispatch = useAppDispatch()
   const receipes = useAppSelector(recipesQueriedState)
