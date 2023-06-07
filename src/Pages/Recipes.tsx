@@ -8,12 +8,18 @@ import {
 } from "../slices/recipesSlice"
 import {useAppDispatch, useAppSelector} from "../redux/hooks"
 import {useNavigate} from "react-router-dom"
+import Pagination from "../components/Pagination"
+import {usePagination} from "../hooks/usePagination"
 const Recipes = () => {
   const dispatch = useAppDispatch()
   const receipes = useAppSelector(recipesQueriedState)
   const navigate = useNavigate()
-  console.log(receipes)
-
+  const {slicedData, pagination, prevPage, nextPage, changePage} =
+    usePagination({
+      itemsPerPage: 4,
+      data: receipes.filteredRecipe,
+      startFrom: 1,
+    })
   return (
     <Layout>
       <div
@@ -64,7 +70,7 @@ const Recipes = () => {
         </p>
       )}
       <div className="flex flex-wrap -m-3 mt-2 mb-8 cursor-pointer container max-w-screen-xl mx-auto px-4">
-        {receipes.filteredRecipe.map(value => {
+        {slicedData.map(value => {
           return (
             <div
               className="w-full sm:w-1/2 md:w-1/3 flex flex-col p-3 mb-3"
@@ -86,6 +92,13 @@ const Recipes = () => {
           )
         })}
       </div>
+      <Pagination
+        idToClampTo="blogs"
+        pagination={pagination}
+        prevPage={prevPage}
+        nextPage={nextPage}
+        changePage={changePage}
+      />
     </Layout>
   )
 }

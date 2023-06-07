@@ -13,6 +13,7 @@ const RecipeDetails = () => {
   const {id} = useParams()
   const dispatch = useAppDispatch()
   const receipes = useAppSelector(recipesDetailedState)
+
   useEffect(() => {
     dispatch(fetchRecipesSearchDetails(id))
   }, [id])
