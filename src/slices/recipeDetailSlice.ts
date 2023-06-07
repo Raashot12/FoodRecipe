@@ -13,10 +13,11 @@ const initialState: RecipeDetailedStateType = {
   details: null,
   error: false,
 }
-export const fetchRecipesSearch = createAsyncThunk(
+export const fetchRecipesSearchDetails = createAsyncThunk(
   "user/fetchRecipesDetails",
-  async (value: number) => {
+  async (value: string | undefined) => {
     const {data} = await fetchRecipesDetails(value)
+    console.log(data)
     return data
   }
 )
@@ -24,20 +25,19 @@ export const fetchRecipesSearch = createAsyncThunk(
 const recipeDetailSlice = createSlice({
   name: "recipe details",
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: builder => {
-    builder.addCase(fetchRecipesSearch.pending, state => {
+    builder.addCase(fetchRecipesSearchDetails.pending, state => {
       state.loading = true
     })
     builder.addCase(
-      fetchRecipesSearch.fulfilled,
+      fetchRecipesSearchDetails.fulfilled,
       (state, action: PayloadAction<any | null>) => {
         state.loading = false
         state.details = {...state.details, ...action.payload}
       }
     )
-    builder.addCase(fetchRecipesSearch.rejected, state => {
+    builder.addCase(fetchRecipesSearchDetails.rejected, state => {
       state.loading = false
       state.error = true
       state.details = null

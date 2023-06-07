@@ -4,12 +4,16 @@ import {
   fetchRecipesSearch,
   recipesQueriedState,
   setSearch,
+  filtering,
 } from "../slices/recipesSlice"
 import {useAppDispatch, useAppSelector} from "../redux/hooks"
+import {useNavigate} from "react-router-dom"
 const Recipes = () => {
   const dispatch = useAppDispatch()
   const receipes = useAppSelector(recipesQueriedState)
+  const navigate = useNavigate()
   console.log(receipes)
+
   return (
     <Layout>
       <div
@@ -37,9 +41,9 @@ const Recipes = () => {
             <input
               type="text"
               name="receipe"
-              value={receipes?.search}
+              value={receipes?.search.trim()}
               onChange={e => {
-                dispatch(setSearch(e.target.value))
+                dispatch(setSearch(e.target.value.trim()))
               }}
               className="px-3 py-4  text-white transper border shadow-sm border-white-300 placeholder-white-400 focus:outline-none focus:white focus:white block base:w-[100%] lg:w-[100%] rounded-xl sm:text-sm focus:ring-1 bg-transparent"
               placeholder="Make a search"
@@ -54,6 +58,34 @@ const Recipes = () => {
         </div>
       </div>
       <RecipesList />
+      {receipes.error && (
+        <p className="py-11 mx-auto text-center text-red-600">
+          Oooop! Please check your network connection
+        </p>
+      )}
+      <div className="flex flex-wrap -m-3 mt-2 mb-8 cursor-pointer container max-w-screen-xl mx-auto px-4">
+        {receipes.filteredRecipe.map(value => {
+          return (
+            <div
+              className="w-full sm:w-1/2 md:w-1/3 flex flex-col p-3 mb-3"
+              key={value.id}
+              onClick={() => navigate(`/recipes/${value?.id}`)}
+            >
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col">
+                <div
+                  className="bg-cover h-48"
+                  style={{
+                    backgroundImage: `url(${value.image}`,
+                  }}
+                ></div>
+                <div className="p-4 flex-1 flex flex-col">
+                  <h3 className="mb-4 text-2xl">{value?.title}</h3>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </Layout>
   )
 }
@@ -61,34 +93,20 @@ const Recipes = () => {
 export default Recipes
 
 const RecipesList = () => {
+  const dispatch = useAppDispatch()
+  const receipes = useAppSelector(recipesQueriedState)
   return (
     <div className="lg:pl-[156.5px] base:pr-6 lg:pr-[156.5px] py-9">
-      <select
-        id="filter"
-        className="border px-3 py-4 shadow-sm border-green-400  text-sm rounded-xl text-black  focus:border-white-500 block base:w-[100%] lg:w-[25%] p-2.5 dark:bg-gray-700 dark:border-gray-600  dark:text-white"
-      >
-        <option selected disabled className="text-black">
-          Filter By
-        </option>
-        <option value="Burger" className="text-black">
-          Burger
-        </option>
-        <option value="Drinks" className="text-black">
-          Drinks
-        </option>
-        <option value="Pizza" className="text-black">
-          Pizza
-        </option>
-        <option value="Salads" className="text-black">
-          Salads
-        </option>
-        <option value="Seafood" className="text-black">
-          Seafood
-        </option>
-        <option value="Sweets" className="text-black">
-          Sweets
-        </option>
-      </select>
+      <input
+        type="text"
+        name="receipe"
+        value={receipes?.filterString}
+        onChange={e => {
+          dispatch(filtering(e.target.value))
+        }}
+        className="px-3 py-4  text-black transper border shadow-sm border-white-300 placeholder-gray-400 focus:outline-none focus:white focus:white block base:w-[100%] lg:w-[100%] rounded-xl sm:text-sm focus:ring-1 bg-transparent"
+        placeholder="Filter"
+      />
     </div>
   )
 }

@@ -9,6 +9,7 @@ type PopularStateType = {
   recipe: any[]
   filteredRecipe: any[]
   search: string
+  filterString: string
 }
 const initialState: PopularStateType = {
   loading: false,
@@ -16,10 +17,12 @@ const initialState: PopularStateType = {
   filteredRecipe: [],
   search: "",
   error: false,
+  filterString: "",
 }
 export const fetchRecipesSearch = createAsyncThunk(
   "user/fetchRecipes",
-  async (value: string,) => {
+  async (value: string) => {
+    console.log(value)
     const {data} = await fetchRecipes(value)
     return data
   }
@@ -31,8 +34,11 @@ const recipesSlice = createSlice({
   reducers: {
     setSearch(state, action: PayloadAction<string>) {
       state.search = action.payload
-      state.filteredRecipe = state.recipe.filter(({name}) =>
-        name.toLowerCase().includes(state.search.toLowerCase())
+    },
+    filtering(state, action: PayloadAction<string>) {
+      state.filterString = action.payload
+      state.filteredRecipe = state.recipe.filter(({title}) =>
+        title.toLowerCase().includes(state.filterString.toLowerCase())
       )
     },
   },
@@ -44,8 +50,8 @@ const recipesSlice = createSlice({
       fetchRecipesSearch.fulfilled,
       (state, action: PayloadAction<any | null>) => {
         state.loading = false
-        state.search=""
-        state.recipe = [...state.recipe, ...action.payload]
+        state.recipe = [...action.payload.results]
+        state.filteredRecipe = [...action.payload.results]
       }
     )
     builder.addCase(fetchRecipesSearch.rejected, state => {
@@ -55,7 +61,8 @@ const recipesSlice = createSlice({
     })
   },
 })
-export const {setSearch} = recipesSlice.actions
+export const {setSearch, filtering} = recipesSlice.actions
 export const recipesQueriedState = (state: RootState) => state.queriedReciepe
-
+export const selectFilteredPokemon = (state: RootState) =>
+  state.queriedReciepe.filteredRecipe
 export default recipesSlice
