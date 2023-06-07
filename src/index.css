@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Cherry+Swash&family=Ubuntu:ital,wght@0,300;0,400;1,300&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 16px;
+   overflow-x: hidden ;
+}
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
