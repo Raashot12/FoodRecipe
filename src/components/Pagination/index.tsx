@@ -33,7 +33,7 @@ const Pagination: FC<IPaginationProps> = ({
   return (
     <Flex justify={"center"} align="center" columnGap={20} mb={20}>
       {/* left arrow button */}
-      <Button
+      <Flex
         display={pagination.length === 0 ? "none" : "flex"}
         onClick={(e: any) => {
           prevPage(e)
@@ -44,9 +44,13 @@ const Pagination: FC<IPaginationProps> = ({
         }}
         // check if on first page
         bg={
-          pagination[0]?.current === true ? "rgba(255, 86, 4, 0.5)" : "#E25D24"
+          // pagination[0]?.current === true ? "rgba(255, 86, 4, 0.5)" : "#E25D24"
+          pagination[0]?.current === true ? "gray" : "green"
         }
         sx={{
+          padding: "12px",
+          borderRadius: "10px",
+          cursor: "pointer",
           ":hover": {
             backgroundColor: "none",
           },
@@ -64,7 +68,7 @@ const Pagination: FC<IPaginationProps> = ({
         }}
       >
         <MdKeyboardArrowLeft color="green" />
-      </Button>
+      </Flex>
 
       <List
         display="flex"
@@ -99,7 +103,8 @@ const Pagination: FC<IPaginationProps> = ({
                       fontSize: 14,
                     },
                     "&.mantine-Button-root": {
-                      color: page.current ? "white" : "#051438",
+                      color: page.current ? "#051438" : "#051438",
+
                       height: 36,
                       "&:hover": {
                         background: "green",
@@ -151,19 +156,20 @@ const Pagination: FC<IPaginationProps> = ({
       </List>
 
       {/* right arrow button */}
-      <Button
+      <Flex
         display={pagination.length === 0 ? "none" : "flex"}
         onClick={(e: any) => {
           nextPage(e)
         }}
         // check if on last page
         bg={
-          pagination[pagination.length - 1]?.current === true
-            ? "rgba(255, 86, 4, 0.5)"
-            : "green"
+          pagination[pagination.length - 1]?.current === true ? "gray" : "green"
         }
         sx={{
-          ":hover": {
+          padding: "12px",
+          borderRadius: "10px",
+          cursor: "pointer",
+          "&:hover": {
             backgroundColor: "none",
           },
           ":active": {
@@ -180,7 +186,7 @@ const Pagination: FC<IPaginationProps> = ({
         }}
       >
         <MdKeyboardArrowRight color="green" />
-      </Button>
+      </Flex>
     </Flex>
   )
 }

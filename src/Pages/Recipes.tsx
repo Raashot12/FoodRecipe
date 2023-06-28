@@ -10,6 +10,8 @@ import {useAppDispatch, useAppSelector} from "../redux/hooks"
 import {useNavigate} from "react-router-dom"
 import Pagination from "../components/Pagination"
 import {usePagination} from "../hooks/usePagination"
+import {Text} from "@mantine/core"
+import Loader from "../Loader"
 const Recipes = () => {
   const dispatch = useAppDispatch()
   const receipes = useAppSelector(recipesQueriedState)
@@ -20,6 +22,7 @@ const Recipes = () => {
       data: receipes.filteredRecipe,
       startFrom: 1,
     })
+
   return (
     <Layout>
       <div
@@ -70,35 +73,53 @@ const Recipes = () => {
         </p>
       )}
       <div className="flex flex-wrap -m-3 mt-2 mb-8 cursor-pointer container max-w-screen-xl mx-auto px-4">
-        {slicedData.map(value => {
-          return (
-            <div
-              className="w-full sm:w-1/2 md:w-1/3 flex flex-col p-3 mb-3"
-              key={value.id}
-              onClick={() => navigate(`/recipes/${value?.id}`)}
-            >
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col">
-                <div
-                  className="bg-cover h-48"
-                  style={{
-                    backgroundImage: `url(${value.image}`,
-                  }}
-                ></div>
-                <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="mb-4 text-2xl">{value?.title}</h3>
-                </div>
-              </div>
-            </div>
-          )
-        })}
+        {receipes.loading ? (
+          <div className="mx-auto">
+            <Loader />
+          </div>
+        ) : (
+          <>
+            {slicedData.length === 0 ? (
+              <Text ta={"center"} mx={"auto"} fw={500}>
+                Ooop! No result found
+              </Text>
+            ) : (
+              slicedData.map(value => {
+                return (
+                  <div
+                    className="w-full sm:w-1/2 md:w-1/3 flex flex-col p-3 mb-3"
+                    key={value.id}
+                    onClick={() => navigate(`/recipes/${value?.id}`)}
+                  >
+                    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col">
+                      <div
+                        className="bg-cover h-48"
+                        style={{
+                          backgroundImage: `url(${value.image}`,
+                        }}
+                      ></div>
+                      <div className="p-4 flex-1 flex flex-col">
+                        <h3 className="mb-4 text-2xl">{value?.title}</h3>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })
+            )}
+          </>
+        )}
       </div>
-      <Pagination
-        idToClampTo="blogs"
-        pagination={pagination}
-        prevPage={prevPage}
-        nextPage={nextPage}
-        changePage={changePage}
-      />
+      {slicedData.length === 0 ? (
+        <></>
+      ) : (
+        <Pagination
+          idToClampTo="blogs"
+          pagination={pagination}
+          prevPage={prevPage}
+          nextPage={nextPage}
+          changePage={changePage}
+        />
+      )}
     </Layout>
   )
 }
